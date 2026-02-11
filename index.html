@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Month One ❤️</title>
 
 <style>
-body {
+html, body {
     margin: 0;
     padding: 0;
+    height: 100%;
     background: black;
     overflow: hidden;
     font-family: Arial, sans-serif;
@@ -17,30 +17,29 @@ body {
 /* Start Screen */
 #startScreen {
     position: fixed;
-    width: 100%;
-    height: 100%;
+    inset: 0;
     background: black;
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 10;
+    z-index: 9999;
 }
 
 #startBtn {
-    padding: 15px 30px;
-    font-size: 18px;
+    padding: 18px 36px;
+    font-size: 20px;
     background: white;
     border: none;
-    border-radius: 30px;
+    border-radius: 40px;
     cursor: pointer;
 }
 
 /* Video */
 #videoContainer {
     position: fixed;
-    width: 100%;
-    height: 100%;
+    inset: 0;
     display: none;
+    z-index: 1;
 }
 
 video {
@@ -49,54 +48,41 @@ video {
     object-fit: cover;
 }
 
-/* Closing Message */
+/* Closing */
 #closingMessage {
     position: fixed;
-    width: 100%;
-    height: 100%;
+    inset: 0;
     background: black;
     color: white;
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
     text-align: center;
     padding: 20px;
-    opacity: 0;
-    transition: opacity 1.5s ease;
-    z-index: 20;
-}
-
-#closingMessage.show {
-    opacity: 1;
+    font-size: 22px;
 }
 </style>
 </head>
 
 <body>
 
-<!-- Start Screen -->
 <div id="startScreen">
     <button id="startBtn">Tap to Begin ❤️</button>
 </div>
 
-<!-- Video -->
 <div id="videoContainer">
     <video id="memoryVideo" playsinline>
         <source src="memory.mp4" type="video/mp4">
     </video>
 </div>
 
-<!-- Music -->
-<audio id="bgMusic" preload="auto" playsinline>
+<audio id="bgMusic" preload="auto">
     <source src="songs.mp3" type="audio/mpeg">
 </audio>
 
-<!-- Closing Message -->
 <div id="closingMessage">
-    <h1>
-        Chapter One was beautiful. <br><br>
-        Can we write all the next chapters together? ❤️
-    </h1>
+    Chapter One was beautiful.<br><br>
+    Can we write the next chapters together? ❤️
 </div>
 
 <script>
@@ -107,21 +93,19 @@ const video = document.getElementById("memoryVideo");
 const music = document.getElementById("bgMusic");
 const closingMessage = document.getElementById("closingMessage");
 
-startBtn.addEventListener("click", () => {
+startBtn.addEventListener("click", function() {
 
-    // Hide start screen
     startScreen.style.display = "none";
     videoContainer.style.display = "block";
 
-    // Play video + music together (same user interaction = mobile safe)
+    // play both together
     video.play();
     music.play().catch(() => {});
 });
 
-// When video ends -> auto fade to message
-video.addEventListener("ended", () => {
+video.addEventListener("ended", function() {
     videoContainer.style.display = "none";
-    closingMessage.classList.add("show");
+    closingMessage.style.display = "flex";
 });
 </script>
 

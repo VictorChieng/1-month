@@ -42,6 +42,13 @@ video {
     height: 100%;
     object-fit: cover;
 }
+/* Audio Video (hidden) */
+#audioVideo {
+    position: fixed;
+    top: -9999px;
+    width: 1px;
+    height: 1px;
+}
 /* Closing */
 #closingMessage {
     position: fixed;
@@ -62,13 +69,13 @@ video {
     <button id="startBtn">Tap to Begin ❤️</button>
 </div>
 <div id="videoContainer">
-    <video id="memoryVideo" playsinline preload="auto">
+    <video id="memoryVideo" playsinline preload="auto" muted>
         <source src="memory.mp4" type="video/mp4">
     </video>
 </div>
-<audio id="bgMusic" preload="auto">
+<video id="audioVideo" playsinline preload="auto">
     <source src="songs.mp3" type="audio/mpeg">
-</audio>
+</video>
 <div id="closingMessage">
     Chapter One was beautiful.<br><br>
     Can we write the next chapters together? ❤️
@@ -78,23 +85,22 @@ const startBtn = document.getElementById("startBtn");
 const startScreen = document.getElementById("startScreen");
 const videoContainer = document.getElementById("videoContainer");
 const video = document.getElementById("memoryVideo");
-const music = document.getElementById("bgMusic");
+const audioVideo = document.getElementById("audioVideo");
 const closingMessage = document.getElementById("closingMessage");
 
 startBtn.addEventListener("click", function() {
     startScreen.style.display = "none";
     videoContainer.style.display = "block";
     
-    // Play both at the exact same time
-    music.play();
+    audioVideo.play();
     video.play();
 });
 
 video.addEventListener("ended", function() {
     videoContainer.style.display = "none";
     closingMessage.style.display = "flex";
-    music.pause();
-    music.currentTime = 0;
+    audioVideo.pause();
+    audioVideo.currentTime = 0;
 });
 </script>
 </body>

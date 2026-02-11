@@ -1,192 +1,128 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Chapter One</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Month One ❤️</title>
 
 <style>
-:root {
-  --bg1:#111;
-  --bg2:#1c1c1c;
-  --accent:#ff4d7d;
+body {
+    margin: 0;
+    padding: 0;
+    background: black;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
 }
 
-*{box-sizing:border-box;}
-
-body{
-  margin:0;
-  min-height:100svh;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  background:linear-gradient(to bottom,var(--bg1),var(--bg2));
-  color:white;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  text-align:center;
-  overflow:hidden;
+/* Start Screen */
+#startScreen {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
 }
 
-.container{
-  width:100%;
-  max-width:700px;
-  padding:24px;
+#startBtn {
+    padding: 15px 30px;
+    font-size: 18px;
+    background: white;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
 }
 
-h1{
-  font-size:clamp(24px,6vw,36px);
-  font-weight:600;
-  margin-bottom:20px;
-  opacity:0;
-  animation:fadeIn 2s forwards;
+/* Video */
+#videoContainer {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    display: none;
 }
 
-button{
-  padding:14px 26px;
-  font-size:16px;
-  font-weight:600;
-  border:none;
-  border-radius:999px;
-  cursor:pointer;
-  background:var(--accent);
-  color:white;
-  box-shadow:0 10px 30px rgba(255,77,125,.3);
+video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
-button:hover{
-  transform:scale(1.05);
+/* Closing Message */
+#closingMessage {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: black;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    opacity: 0;
+    transition: opacity 1.5s ease;
+    z-index: 20;
 }
 
-.video-wrapper{
-  display:none;
-  position:fixed;
-  inset:0;
-  background:black;
-  justify-content:center;
-  align-items:center;
-}
-
-video{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
-.final-text{
-  position:fixed;
-  inset:0;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  background:rgba(0,0,0,.7);
-  padding:30px;
-  text-align:center;
-  font-size:clamp(20px,5vw,32px);
-  line-height:1.6;
-  display:none;
-}
-
-.cursor{
-  border-right:2px solid white;
-  animation:blink 1s infinite;
-}
-
-@keyframes blink{
-  0%,50%,100%{border-color:white;}
-  25%,75%{border-color:transparent;}
-}
-
-@keyframes fadeIn{
-  to{opacity:1;}
+#closingMessage.show {
+    opacity: 1;
 }
 </style>
 </head>
 
 <body>
 
-<div class="container" id="intro">
-  <h1>
-    January 1 — I decided to try.<br><br>
-    January 11 — You said yes.<br><br>
-    February 11 — One month with you.
-  </h1>
-
-  <button id="startBtn">Relive it with me</button>
+<!-- Start Screen -->
+<div id="startScreen">
+    <button id="startBtn">Tap to Begin ❤️</button>
 </div>
 
-<div class="video-wrapper" id="videoSection">
-  <video id="memoryVideo" src="memory.mp4"></video>
+<!-- Video -->
+<div id="videoContainer">
+    <video id="memoryVideo" playsinline>
+        <source src="memory.mp4" type="video/mp4">
+    </video>
 </div>
 
-<div class="final-text" id="finalText">
-  <div id="typewriter"></div>
-</div>
+<!-- Music -->
+<audio id="bgMusic" preload="auto" playsinline>
+    <source src="songs.mp3" type="audio/mpeg">
+</audio>
 
-<audio id="bgMusic" src="songs.mp3"></audio>
+<!-- Closing Message -->
+<div id="closingMessage">
+    <h1>
+        Chapter One was beautiful. <br><br>
+        Can we write all the next chapters together? ❤️
+    </h1>
+</div>
 
 <script>
 const startBtn = document.getElementById("startBtn");
-const intro = document.getElementById("intro");
-const videoSection = document.getElementById("videoSection");
+const startScreen = document.getElementById("startScreen");
+const videoContainer = document.getElementById("videoContainer");
 const video = document.getElementById("memoryVideo");
-const finalText = document.getElementById("finalText");
-const typewriter = document.getElementById("typewriter");
 const music = document.getElementById("bgMusic");
+const closingMessage = document.getElementById("closingMessage");
 
-startBtn.onclick = () => {
-  intro.style.display = "none";
-  videoSection.style.display = "flex";
+startBtn.addEventListener("click", () => {
 
-  music.volume = 0;
-  music.play();
+    // Hide start screen
+    startScreen.style.display = "none";
+    videoContainer.style.display = "block";
 
-  // Fade in music
-  let vol = 0;
-  const fade = setInterval(()=>{
-    if(vol < 0.6){
-      vol += 0.02;
-      music.volume = vol;
-    } else {
-      clearInterval(fade);
-    }
-  },100);
+    // Play video + music together (same user interaction = mobile safe)
+    video.play();
+    music.play().catch(() => {});
+});
 
-  video.play();
-};
-
-video.onended = () => {
-  videoSection.style.display = "none";
-  finalText.style.display = "flex";
-  startTypewriter();
-};
-
-function startTypewriter(){
-  const textLines = [
-    "Chapter One was beautiful.",
-    "",
-    "Can we write all the next chapters together?"
-  ];
-
-  let lineIndex = 0;
-  let charIndex = 0;
-
-  function type(){
-    if(lineIndex < textLines.length){
-      if(charIndex < textLines[lineIndex].length){
-        typewriter.innerHTML += textLines[lineIndex][charIndex];
-        charIndex++;
-        setTimeout(type, 50);
-      } else {
-        typewriter.innerHTML += "<br>";
-        lineIndex++;
-        charIndex = 0;
-        setTimeout(type, 600);
-      }
-    }
-  }
-
-  type();
-}
+// When video ends -> auto fade to message
+video.addEventListener("ended", () => {
+    videoContainer.style.display = "none";
+    closingMessage.classList.add("show");
+});
 </script>
 
 </body>
